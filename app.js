@@ -27,7 +27,7 @@ let offerCat='全部';const offerCats=['全部',...new Set(D.offers.map(o=>o.cat
 $('#offerFilters').innerHTML=offerCats.map(c=>`<button class="chip ${c==='全部'?'active':''}" type="button" data-offer-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('');
 function renderOffers(){const list=D.offers.filter(o=>offerCat==='全部'||o.category===offerCat);
  $('#offerCount').textContent=`显示 ${list.length} / ${D.offers.length} 种服务包`;
- $('#offerGrid').innerHTML=list.map(o=>`<article class="offer-card"><div class="offer-top"><span class="tag">${escapeHtml(o.category)} · ${escapeHtml(o.level)}</span><span class="offer-num">${escapeHtml(o.id.toUpperCase())}</span></div><h3>${escapeHtml(o.name)}</h3><p>${escapeHtml(o.what)}</p><div class="offer-list"><p><b>客户提供：</b>${escapeHtml(o.inputs)}</p><p><b>验收交付：</b>${escapeHtml(o.deliverable)}</p><p><b>风险提醒：</b>${escapeHtml(o.risk)}</p></div><div class="offer-hypo"><span>演示报价参数 <strong>¥${o.illustrativePrice}</strong></span><span>直接成本假设 ¥${o.illustrativeCost}</span><button type="button" data-use-price="${o.id}">代入测算 ↗</button></div></article>`).join('');
+ $('#offerGrid').innerHTML=list.map(o=>`<article class="offer-card"><div class="offer-top"><span class="tag">${escapeHtml(o.category)} · ${escapeHtml(o.level)}</span><span class="offer-num">${escapeHtml(o.id.toUpperCase())}</span></div><h3>${escapeHtml(o.name)}</h3><p>${escapeHtml(o.what)}</p><div class="offer-list"><p><b>客户提供：</b>${escapeHtml(o.inputs)}</p><p><b>验收交付：</b>${escapeHtml(o.deliverable)}</p><p><b>风险提醒：</b>${escapeHtml(o.risk)}</p></div><details class="offer-sop"><summary>查看可验收SOP、修改与除外范围</summary><dl><dt>约定范围</dt><dd>${escapeHtml(o.scope)}</dd><dt>操作步骤</dt><dd>${escapeHtml(o.workflow)}</dd><dt>验收条件</dt><dd>${escapeHtml(o.acceptance)}</dd><dt>明确不包含</dt><dd>${escapeHtml(o.excluded)}</dd><dt>修改与变更</dt><dd>${escapeHtml(o.revisions)}</dd><dt>证据材料</dt><dd>${escapeHtml(o.proof)}</dd></dl></details><div class="offer-hypo"><span>演示报价参数 <strong>¥${o.illustrativePrice}</strong></span><span>直接成本假设 ¥${o.illustrativeCost}</span><button type="button" data-use-price="${o.id}">代入测算 ↗</button></div></article>`).join('');
  $('#offerFilters').querySelectorAll('[data-offer-cat]').forEach(x=>x.classList.toggle('active',x.dataset.offerCat===offerCat));}
 // Chapters
 let lessonSearch='',lessonCat='全部',lessonUndone=false;
@@ -43,14 +43,45 @@ function renderPrompts(){const arr=D.prompts.filter(p=>(promptCat==='全部'||p.
  $('#promptGrid').innerHTML=arr.length?arr.map(p=>`<article class="prompt-card"><div class="prompt-card-head"><span>${escapeHtml(p.category)} / ${escapeHtml(p.stage)}</span><button type="button" class="favorite-btn ${has('favorite',p.id)?'active':''}" data-favorite="${p.id}" aria-pressed="${has('favorite',p.id)}" title="收藏${escapeHtml(p.title)}">${has('favorite',p.id)?'♥':'♡'}</button></div><h3>${escapeHtml(p.title)}</h3><p>交付：${escapeHtml(p.deliverable)}</p><div class="prompt-preview">${escapeHtml(p.prompt.slice(0,120))}…</div><div class="prompt-actions"><button type="button" data-copy-prompt="${p.id}">复制完整提示词 ↗</button><button type="button" data-expand-prompt="${p.id}">查看全文 +</button></div><details id="prompt-${p.id}"><summary>完整提示词与使用边界</summary><pre>${escapeHtml(p.prompt)}</pre></details></article>`).join(''):'<p>没有匹配的提示词。</p>';
  $('#promptFilters').querySelectorAll('[data-prompt-cat]').forEach(b=>b.classList.toggle('active',b.dataset.promptCat===promptCat));}
 // Unit economics: illustrative math only; no earnings forecasts.
-const calcIds=['calcPrice','calcOrders','calcCost','calcHours','calcFixed','calcReserve'];
+const calcIds=['calcPrice','calcOrders','calcCost','calcHours','calcFixed','calcReserve','calcAcqHours','calcReworkHours','calcRefundRate','calcFeeRate'];
 const money=(n)=>Number.isFinite(n)?'¥'+n.toLocaleString('zh-CN',{maximumFractionDigits:2,minimumFractionDigits:0}):'—';
 const num=id=>{let n=Number($('#'+id).value);return Number.isFinite(n)?Math.max(0,n):0;};
-function calculate(){const price=num('calcPrice'),orders=Math.min(100000,Math.floor(num('calcOrders'))),direct=num('calcCost'),hours=num('calcHours'),fixed=num('calcFixed'),reserve=Math.min(100,num('calcReserve'))/100;
- const revenue=price*orders,margin=revenue-(direct*orders)-fixed,net=margin-Math.max(0,margin)*reserve,totalHours=hours*orders;
+function calculate(){
+ const price=num('calcPrice'),orders=Math.min(100000,Math.floor(num('calcOrders'))),direct=num('calcCost'),hours=num('calcHours'),fixed=num('calcFixed');
+ const acqHours=num('calcAcqHours'),reworkHours=num('calcReworkHours');
+ const reserve=Math.min(100,num('calcReserve'))/100,refund=Math.min(100,num('calcRefundRate'))/100,fee=Math.min(100,num('calcFeeRate'))/100;
+ const gross=price*orders,revenue=gross*(1-refund),feeAmount=gross*fee;
+ const margin=revenue-direct*orders-fixed-feeAmount,net=margin-Math.max(0,margin)*reserve;
+ const totalHours=orders*(hours+acqHours+reworkHours);
  $('#calcRevenue').textContent=money(revenue);$('#calcMargin').textContent=money(margin);$('#calcNet').textContent=money(net);$('#calcTotalHours').textContent=totalHours.toLocaleString('zh-CN',{maximumFractionDigits:2})+' h';$('#calcHourly').textContent=totalHours>0?money(net/totalHours):'—';
- return {price,orders,direct,hours,fixed,reserve:reserve*100,revenue,margin,net,totalHours};}
+ return {price,orders,direct,hours,fixed,reserve:reserve*100,refund:refund*100,fee:fee*100,acqHours,reworkHours,gross,revenue,margin,net,totalHours};
+}
 calcIds.forEach(x=>$('#'+x).addEventListener('input',calculate));calculate();
+// Quote draft: ephemeral user text, never put into innerHTML or localStorage.
+$('#proposalOffer').innerHTML=D.offers.map(o=>`<option value="${escapeHtml(o.id)}">${escapeHtml(o.name)}</option>`).join('');
+let proposalText='';
+$('#makeProposal').addEventListener('click',()=>{
+ const o=D.offers.find(x=>x.id===$('#proposalOffer').value),problem=$('#proposalProblem').value.trim(),deadline=$('#proposalDeadline').value.trim();
+ if(!o||!problem){$('#proposalOutput').textContent='请填写经过脱敏的客户问题，不要粘贴真实的个人信息。';$('#copyProposal').disabled=true;return;}
+ proposalText=[`【服务范围草稿 / 待双方确认】`,`服务名称：${o.name}`,`待解决问题：${problem}`,`客户提供：${o.inputs}`,`本次包含：${o.scope}`,`交付成果：${o.deliverable}`,`验收标准：${o.acceptance}`,`明确不包含：${o.excluded}`,`修改范围：${o.revisions}`,`交付时间：${deadline||'尚未确认，需双方书面约定'}`,`价格与付款：尚未确认，不能把网站教学演示价格直接当正式报价`,`资料安全：需确认资料许可与可用工具，未经授权不上传`,`变更：${o.changeControl}`,`最终交付需人工复核事实、第三方权利和约定的格式。`].join('\n');
+ $('#proposalOutput').textContent=proposalText;$('#copyProposal').disabled=false;
+});
+$('#copyProposal').addEventListener('click',()=>{if(proposalText)copyText(proposalText);});
+// Readiness gate: no false assurance from simply checking boxes.
+const readiness=[...document.querySelectorAll('[data-ready]')];
+function renderReadiness(){const checked=readiness.filter(x=>x.checked).length;
+ $('#readinessResult').textContent=checked===6?'自查 6 / 6：请再取得客户确认，打勾不等于已通过外部审计。':`已完成 ${checked} / 6：缺少 ${6-checked} 项，先完善再作商业承诺。`;}
+readiness.forEach(x=>x.addEventListener('change',renderReadiness));renderReadiness();
+// Conservative privacy advice; not an authorization grant.
+function renderPrivacy(){const typ=$('#privacyType').value,permit=$('#privacyAllowed').value,env=$('#privacyEnvironment').value;let msg;
+ if(permit==='no'||env==='no')msg='停止上传：未获授权，或使用环境与约定不符。请走正式审批与替代数据流程。';
+ else if(typ==='sensitive')msg='高风险：不要把密钥、证件、合同秘密等内容输入普通对话；请使用批准的专业处理流程或模拟数据。';
+ else if(permit!=='yes'||env!=='yes')msg='信息不足：未确认许可或环境。不要上传；先核实客户合同与组织政策。';
+ else if(typ==='personal')msg='谨慎处理：即使有授权也须数据最小化、严格脱敏及评估工作环境。不能仅凭本工具判定合法。';
+ else if(typ==='internal')msg='仅限批准的环境和明确用途，先确认保密义务与访问权限。优先使用模拟/汇总材料。';
+ else msg='仅对获授权的公开资料进行最小必要处理。仍须检查第三方版权及事实准确性。';
+ $('#privacyResult').textContent=msg;$('#privacyResult').classList.toggle('warning',typ!=='public'||permit!=='yes'||env!=='yes');}
+['#privacyType','#privacyAllowed','#privacyEnvironment'].forEach(x=>$(x).addEventListener('change',renderPrivacy));renderPrivacy();
 // Activity plan & case references
 function renderPlan(){$('#daysGrid').innerHTML=D.days7.map(x=>`<article class="day-card ${has('day',x.id)?'checked':''}"><div class="day-label">${escapeHtml(x.day)}</div><h3>${escapeHtml(x.title)}</h3><p>${escapeHtml(x.deliverable)}</p><label class="day-check"><input type="checkbox" data-day="${x.id}" ${has('day',x.id)?'checked':''}> 我实际完成了</label></article>`).join('');
  $('#weeksGrid').innerHTML=D.weeks30.map(x=>`<article class="week-card"><span>${escapeHtml(x.week)}</span><strong>${escapeHtml(x.title)}</strong><p>${escapeHtml(x.deliverable)}</p></article>`).join('');}
@@ -73,7 +104,7 @@ $('#sourcesGrid').innerHTML=D.sources.map(x=>`<a class="source-card" href="${esc
  $('#lessonSearch').addEventListener('input',e=>{lessonSearch=e.target.value.trim();renderLessons();});$('#lessonCategory').addEventListener('change',e=>{lessonCat=e.target.value;renderLessons();});$('#lessonUndone').addEventListener('change',e=>{lessonUndone=e.target.checked;renderLessons();});
  $('#promptSearch').addEventListener('input',e=>{promptQuery=e.target.value.trim();renderPrompts();});$('#onlyFavorite').addEventListener('change',e=>{onlyFavorite=e.target.checked;renderPrompts();});$('#clearPrompts').addEventListener('click',()=>{promptQuery='';promptCat='全部';onlyFavorite=false;$('#promptSearch').value='';$('#onlyFavorite').checked=false;renderPrompts();});
  $('#faqSearch').addEventListener('input',e=>{faqQuery=e.target.value.trim();renderFaq();});
- $('#copyCalc').addEventListener('click',()=>{let x=calculate();copyText(`ChatGPT服务报价情景（纯假设，非收益预测）\n报价：${x.price}元；假设单数：${x.orders}；每单直接成本：${x.direct}元；每单工时：${x.hours}小时；固定费用：${x.fixed}元；税费及其他预留：${x.reserve}%\n假设总收入：${x.revenue}元；扣除部分成本：${x.margin}元；预留后估算结余：${x.net}元；总交付时长：${x.totalHours}小时。\n未包括真实获客成本、退款、税务计算及成交不确定性。`);});
+ $('#copyCalc').addEventListener('click',()=>{let x=calculate();copyText(`ChatGPT服务报价情景（纯假设，非收益预测）\n报价：${x.price}元；假设单数：${x.orders}；每单直接成本：${x.direct}元；每单工时：${x.hours}小时；获客工时：${x.acqHours}小时/单；返工预留：${x.reworkHours}小时/单；退款比例：${x.refund}%；平台费率：${x.fee}%；固定费用：${x.fixed}元；税费及其他预留：${x.reserve}%\n折算退款后收入：${x.revenue}元；扣除部分成本：${x.margin}元；预留后估算结余：${x.net}元；总交付时长：${x.totalHours}小时。\n退款、手续费与部分工时已作为假设纳入，但未成交开发投入、实际税务与其他成本仍可能被低估。`);});
  $('#exportProgress').addEventListener('click',()=>{let finished=D.chapters.filter(x=>has('finished',x.id)).map(x=>'- '+x.title),days=D.days7.filter(x=>has('day',x.id)).map(x=>'- '+x.day+' '+x.title),fav=D.prompts.filter(x=>has('favorite',x.id)).map(x=>'- '+x.title);let content=['# ChatGPT 赚钱攻略学习记录','导出日期：'+new Date().toLocaleDateString('zh-CN'),'','## 已完成章节',...(finished.length?finished:['（无）']),'','## 已完成练习',...(days.length?days:['（无）']),'','## 收藏的提示词',...(fav.length?fav:['（无）']),'','提醒：学习记录不代表收入。'].join('\n');const u=URL.createObjectURL(new Blob([content],{type:'text/markdown;charset=utf-8'}));let a=document.createElement('a');a.href=u;a.download='ChatGPT-第一单练习记录.md';a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);});
  $('#closeDialog').addEventListener('click',()=>$('#lessonDialog').close());$('#lessonDialog').addEventListener('click',e=>{if(e.target===$('#lessonDialog'))$('#lessonDialog').close();});
  renderOffers();renderLessons();renderPrompts();renderPlan();renderFaq();

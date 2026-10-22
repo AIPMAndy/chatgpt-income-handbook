@@ -5,13 +5,14 @@ J=json.loads((ROOT/'data/catalog.json').read_text(encoding='utf-8'))
 
 class HandbookTests(unittest.TestCase):
  def test_counts(self):
-  self.assertEqual(len(J['chapters']),26)
+  self.assertEqual(len(J['chapters']),34)
   self.assertEqual(len(J['offers']),10)
-  self.assertEqual(len(J['prompts']),48)
-  self.assertEqual(len(J['faq']),24)
+  self.assertEqual(len(J['prompts']),64)
+  self.assertEqual(len(J['faq']),36)
   self.assertEqual(len(J['days7']),7)
   self.assertEqual(len(J['weeks30']),4)
-  self.assertEqual(len(J['sources']),10)
+  self.assertEqual(len(J['sources']),13)
+  self.assertEqual(len(J['scenarios']),4)
  def test_json_js_sync(self):
   s=(ROOT/'data/catalog.js').read_text(encoding='utf-8')
   self.assertTrue(s.startswith('window.CHATGPT_INCOME_DATA = '))
@@ -104,5 +105,52 @@ class HandbookTests(unittest.TestCase):
   txt=(ROOT/'README.md').read_text(encoding='utf-8')
   self.assertIn('非 OpenAI 官方',txt)
   self.assertIn('不承诺收益',txt)
+
+
+ def test_deep_service_sops_all_have_acceptance_and_scope(self):
+  fields=['scope','deliverable','acceptance','excluded','revisions','workflow','proof','changeControl','pricingNote']
+  for o in J['offers']:
+   for f in fields:
+    self.assertIn(f,o)
+    self.assertGreaterEqual(len(o[f]),8,(o['id'],f))
+   self.assertIn('确认',o['changeControl'])
+ def test_no_marketing_claim_on_simulated_cases(self):
+  for x in J['scenarios']:
+   self.assertTrue('演示' in x['kind'] or '模拟' in x['kind'])
+   self.assertTrue(all(x.get(k) for k in ['input','process','output','qa','failure','evidence']))
+  self.assertIn('模拟交付案例', (ROOT/'docs/DEMO-CASE-LAB.md').read_text(encoding='utf-8'))
+ def test_v2_interactive_tools_exist(self):
+  h=(ROOT/'index.html').read_text(encoding='utf-8')
+  js=(ROOT/'app.js').read_text(encoding='utf-8')
+  for id in ['proposalOffer','proposalProblem','proposalDeadline','makeProposal','copyProposal','proposalOutput','privacyType','privacyAllowed','privacyEnvironment','privacyResult','readinessResult','calcAcqHours','calcReworkHours','calcRefundRate','calcFeeRate']:
+   self.assertIn('id="'+id+'"',h)
+   self.assertIn(id,js)
+  self.assertIn('textContent=proposalText',js) # user's raw text never injected into HTML
+  self.assertIn("permit==='no'||env==='no'",js)
+ def test_v2_cost_arithmetic_has_human_labor_and_refunds(self):
+  js=(ROOT/'app.js').read_text(encoding='utf-8')
+  self.assertIn('gross*(1-refund)',js)
+  self.assertIn('orders*(hours+acqHours+reworkHours)',js)
+  self.assertIn('gross*fee',js)
+  self.assertIn('margin-Math.max(0,margin)*reserve',js)
+  h=(ROOT/'index.html').read_text(encoding='utf-8')
+  self.assertIn('未成交线索',h)
+ def test_sop_and_new_templates_in_repository(self):
+  for x in ['docs/SERVICE-SOPS.md','docs/PRIVACY-SOP.md','docs/CLAIM-LEDGER.md','docs/QUALITY-METHOD.md','docs/DEMO-CASE-LAB.md','templates/ACCEPTANCE-REPORT.md','templates/CHANGE-REQUEST.md','templates/PRIVACY-CONSENT.md','templates/FAILURE-RETRO.md','templates/AI-DISCLOSURE.md']:
+   self.assertGreater((ROOT/x).stat().st_size,120,x)
+ def test_v2_all_prompts_have_nonfabrication_guard(self):
+  for x in J['prompts']:
+   self.assertTrue('未经授权' in x['prompt'] or '经过授权' in x['prompt'] or '获授权' in x['prompt'])
+   self.assertTrue(any(t in x['prompt'] for t in ['不可编造','不要编造','不得编造','不能编造','禁止编造','不可补写']))
+ def test_v2_high_risk_sources_tracked(self):
+  text=(ROOT/'docs/CLAIM-LEDGER.md').read_text(encoding='utf-8')
+  for term in ['分开计费','个人聊天','Business','共享','模拟','作者自行']:
+   self.assertIn(term,text)
+ def test_website_does_not_send_private_form_contents(self):
+  js=(ROOT/'app.js').read_text(encoding='utf-8')
+  self.assertNotIn('fetch(',js)
+  self.assertNotIn('XMLHttpRequest',js)
+  self.assertNotIn('sendBeacon',js)
+  self.assertNotIn('localStorage.setItem(K,proposalText)',js)
 
 if __name__=='__main__':unittest.main()

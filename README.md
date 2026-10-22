@@ -6,7 +6,21 @@
 
 ![项目原创分享图](assets/social-preview.png)
 
-**互动网站**：https://aipmandy.github.io/chatgpt-income-handbook/ （首次需要 GitHub Pages 发布成功后生效）
+**互动网站**：https://aipmandy.github.io/chatgpt-income-handbook/ （已配置自动部署；以上线状态为准）
+
+## 🚀 v2.0 新增：真的可以照着跑一次商业交付
+
+**[接单工作台（打开网页）](https://aipmandy.github.io/chatgpt-income-handbook/#toolkit)**：客户资料能否使用的保守检查、接单六项检查、可复制的服务报价/范围草稿。
+
+**[10套可验收服务SOP](docs/SERVICE-SOPS.md)**：每套包含客户前置资料、服务范围、客观验收标准、明确排除项、修改次数、变更流程和质量证据。
+
+**[4个模拟交付案例](docs/DEMO-CASE-LAB.md)**：全部使用虚构输入，包含失败模式、人工审核与交付件；不伪装成真实收款案例。
+
+**[客户数据与共享链接安全](docs/PRIVACY-SOP.md)**：个人账户、企业账户、权限、资料分级和误上传处置。
+
+**[高风险事实台账](docs/CLAIM-LEDGER.md)** · **[对抗式质量标准](docs/QUALITY-METHOD.md)** · **[变更记录](docs/CHANGELOG.md)**
+
+> 质量目标是“任何陌生人可以按步骤执行并判断哪里错”，并不宣称经过所有业务真实付费实测，更不冒称全网第一。
 
 ## 📌 先看这一段
 
@@ -16,12 +30,12 @@ ChatGPT 本身不会直接支付工资。收入来自为**有真实需求的客�
 
 | 模块 | 内容 | 在线功能 |
 |---|---|---|
-| 26章完整教程 | 定位、基础、选品、获客、成交、交付、合规、复盘 | 搜索、筛选、进度 |
+| 34章完整教程 | 定位、基础、选品、获客、成交、交付、合规、复盘 | 搜索、筛选、进度 |
 | 10个服务包 | 明确客户输入、最终交付、风险、示例成本 | 按分类筛选、代入测算 |
-| 48套提示词 | 12种服务场景×需求澄清/首版/红队/验收 | 搜索、复制、收藏 |
-| 收益成本计算器 | 营收、直接成本、固定费、工时、情景预留 | 本地计算 |
+| 64套提示词 | 12种服务场景×需求澄清/首版/红队/验收 | 搜索、复制、收藏 |
+| 收益成本计算器 | 退款、手续费、返工、获客工时、直接成本、固定费、情景预留 | 本地计算 |
 | 7/30天计划 | 从样品制作、访谈到有限范围试单 | 打卡、导出 |
-| 24条 FAQ | 成本、版权、隐私、收费、安全边界 | 检索、官方来源 |
+| 36条 FAQ | 成本、版权、隐私、收费、安全边界 | 检索、官方来源 |
 | 案例与证据制度 | 严格区分本人自述、已公开凭证和模拟 | 证据分级 |
 
 ## 🎯 7天最低行动路径
@@ -55,8 +69,8 @@ ChatGPT 本身不会直接支付工资。收入来自为**有真实需求的客�
 
 ## 📚 完整可离线阅读内容
 
-- [26章完整版](docs/COMPLETE-GUIDE.md)
-- [48套提示词库](docs/PROMPT-LIBRARY.md)
+- [34章完整版](docs/COMPLETE-GUIDE.md)
+- [64套提示词库](docs/PROMPT-LIBRARY.md)
 - [官方参考来源](docs/SOURCES.md)
 - [对抗式审核记录](docs/ADVERSARIAL-AUDIT.md)
 
@@ -79,17 +93,16 @@ python3 -m http.server 8000
 # 然后打开 http://localhost:8000/
 ```
 
-页面依赖 `data/catalog.js`，同时提供等价可检索的 `data/catalog.json`。修改 JSON 后应同步生成对应 JS 文件，并运行测试检查一致性。
+页面依赖 `data/catalog.js`，同时提供等价可检索的 `data/catalog.json`。JSON 是单一事实源；更新后应重新生成 JS 和文字版课程/提示词文档。CI 会检查 JSON 与 JS 的一致性，人工需要核对文字版是否同步。
 
 ## 🌐 GitHub Pages 发布
 
-**建议仓库：** `AIPMAndy/chatgpt-income-handbook`。本项目自带 GitHub Actions 质量门禁与 Pages 工作流。
+**正式仓库：** [AIPMAndy/chatgpt-income-handbook](https://github.com/AIPMAndy/chatgpt-income-handbook)。本项目自带 GitHub Actions 质量门禁与 Pages 工作流。
 
-1. 在 `https://github.com/new` 创建 `chatgpt-income-handbook`，选择 **Public**。
-2. 上传整个仓库所有文件到 `main` 根目录（必须包括 `index.html`）。
-3. 在 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
-4. 到 **Actions** 检查 `Verify guide content` 与 `Deploy website to GitHub Pages` 成功。
-5. 访问 `https://aipmandy.github.io/chatgpt-income-handbook/`。
+1. 仓库已创建，文件位于 `main` 根目录。
+2. **Settings → Pages → Build and deployment → Source** 设为 **GitHub Actions**。
+3. 到 **Actions** 检查 `Verify guide content` 与 `Deploy website to GitHub Pages`。
+4. 访问 `https://aipmandy.github.io/chatgpt-income-handbook/`。
 
 若 Pages 显示 404，先检查 Pages 是否真的启用，别把通过代码测试误以为已经成功部署。
 
