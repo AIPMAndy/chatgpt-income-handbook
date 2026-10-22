@@ -4,6 +4,14 @@
 
 **作者：AI 酋长 Andy** · 官网 [metaver.vip](https://metaver.vip/) · [AI+IP / 求职与职业陪跑](https://metaver.vip/services) · 微信 **`AIPMAndy`**（添加时备注“ChatGPT赚钱指南”）
 
+### 📩 需要实际项目辅导？联系 Andy
+
+**微信：`AIPMAndy`**（在微信中搜索添加，备注「ChatGPT赚钱指南」）  
+**官网：** [https://metaver.vip/](https://metaver.vip/)  
+**咨询与陪跑：** [https://metaver.vip/services](https://metaver.vip/services)
+
+本开源教程免费使用；咨询、AI+IP 和职业陪跑是独立的付费服务，具体以官网介绍为准，不承诺赚钱结果。
+
 ![项目原创分享图](assets/social-preview.png)
 
 **互动网站**：https://aipmandy.github.io/chatgpt-income-handbook/ （已配置自动部署；以上线状态为准）

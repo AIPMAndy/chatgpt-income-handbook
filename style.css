@@ -34,3 +34,20 @@
 .offer-sop dd{margin:0;color:#44534b}
 @media(max-width:980px){.proposal-panel{grid-template-columns:1fr 1fr}.proposal-intro{grid-column:1/-1}}
 @media(max-width:700px){.toolkit-grid,.proposal-panel{grid-template-columns:1fr}.proposal-intro{grid-column:auto}.tool-panel,.proposal-panel{padding:20px}.kit-links{gap:12px}.offer-sop dl{grid-template-columns:1fr;gap:4px}.offer-sop dd{margin-bottom:7px}}
+
+/* v2.1 - unobtrusive, visible author identity and conversion across screen sizes */
+.topbar nav .nav-contact{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:var(--ink);color:#fff;font-size:12px;font-weight:800;padding:9px 15px;white-space:nowrap}
+.topbar nav .nav-contact:hover{background:#285747;color:#fff}
+.hero-contact-strip{margin-top:23px;border:1px solid #b6cbb2;border-radius:13px;padding:17px 19px;background:linear-gradient(110deg,#edf4e3,#fffef5);box-shadow:0 8px 22px #173b1c09}
+.hero-contact-hint{display:block;color:#425b49;font-size:12px;font-weight:700;margin-bottom:10px}
+.hero-contact-identity{display:flex;align-items:center;gap:10px 17px;flex-wrap:wrap;font-size:12px}
+.hero-contact-identity>span{color:#3f5846;white-space:nowrap}
+.hero-contact-identity strong{font-size:15px;color:#132f24;letter-spacing:.025em}
+.hero-contact-identity>button{border:1px solid #63836c;border-radius:6px;padding:7px 12px;color:#214e37;background:white;font-size:12px;font-weight:800;cursor:pointer}
+.hero-contact-identity>button:hover{background:#e1efdb}
+.hero-contact-identity>a{font-size:12px;font-weight:800;color:#246546;text-decoration:underline;text-decoration-color:#bbceba;text-underline-offset:4px}
+.hero-contact-identity>a:hover{color:#102e1f}
+@media(max-width:1160px){.topbar nav{gap:13px}.topbar nav .nav-contact{padding:9px 11px}}
+@media(max-width:930px){.topbar nav>a:not(.nav-contact){display:none}.header-inner{gap:12px}}
+@media(max-width:770px){.topbar nav>a.nav-contact{display:inline-flex}.topbar nav>a.nav-github{display:none}.topbar nav{gap:7px}.hero-contact-strip{margin-top:22px;padding:16px}.hero-contact-identity{gap:10px 13px}}
+@media(max-width:370px){.topbar .header-inner{gap:7px}.logo{gap:8px}.logo-icon{width:32px;height:32px;font-size:25px}.logo b{font-size:10px}.logo small{font-size:7px}.topbar nav .nav-contact{font-size:11px;padding:7px 9px}}
