@@ -1,0 +1,20 @@
+name: Verify guide content
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python content tests
+        run: python3 -m unittest discover -s tests -v
+      - name: JavaScript syntax
+        run: |
+          node --check app.js
+          node --check data/catalog.js
