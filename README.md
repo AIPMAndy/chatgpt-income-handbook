@@ -16,6 +16,14 @@
 
 **互动网站**：https://aipmandy.github.io/chatgpt-income-handbook/ （已配置自动部署；以上线状态为准）
 
+## 🧪 v2.2 对抗式纠错与完整商业交付练习
+
+- [虚构订单从需求到签收的完整示范](docs/END-TO-END-TRIAL.md)：包含授权、报价、负面测试、验收和复盘；没有真实订单。
+- [成本公式与反例](docs/UNIT-ECONOMICS.md)：补算未成交工时、自己的劳动时间价值、获客现金费用，区分现金结余和劳动后的差额。
+- [证据公开四等级](docs/EVIDENCE-PUBLICATION.md)：模拟、作者自述、客户验收和公开可验证材料严格分开。
+- [发布质量状态](docs/RELEASE-QA.md)：修复旧版报告中过时的章节数量与仓库状态。
+- **网站新增证据检查器**，模拟场景负面测试与 Python 质量检查一起进入 GitHub Pages 发布门禁。
+
 ## 🚀 v2.0 新增：真的可以照着跑一次商业交付
 
 **[接单工作台（打开网页）](https://aipmandy.github.io/chatgpt-income-handbook/#toolkit)**：客户资料能否使用的保守检查、接单六项检查、可复制的服务报价/范围草稿。
@@ -40,8 +48,8 @@ ChatGPT 本身不会直接支付工资。收入来自为**有真实需求的客�
 |---|---|---|
 | 34章完整教程 | 定位、基础、选品、获客、成交、交付、合规、复盘 | 搜索、筛选、进度 |
 | 10个服务包 | 明确客户输入、最终交付、风险、示例成本 | 按分类筛选、代入测算 |
-| 64套提示词 | 12种服务场景×需求澄清/首版/红队/验收 | 搜索、复制、收藏 |
-| 收益成本计算器 | 退款、手续费、返工、获客工时、直接成本、固定费、情景预留 | 本地计算 |
+| 64套提示词 | 16种任务场景×需求澄清/首版/红队/验收 | 搜索、复制、收藏 |
+| 收益成本计算器 | 退款、手续费、返工、未成交线索工时、劳动价值、获客现金费与其他成本 | 本地计算 |
 | 7/30天计划 | 从样品制作、访谈到有限范围试单 | 打卡、导出 |
 | 36条 FAQ | 成本、版权、隐私、收费、安全边界 | 检索、官方来源 |
 | 案例与证据制度 | 严格区分本人自述、已公开凭证和模拟 | 证据分级 |
@@ -87,7 +95,7 @@ ChatGPT 本身不会直接支付工资。收入来自为**有真实需求的客�
 - 使用输出前需要进行事实核验与人工审核；对外不要将 AI 生成的内容冒充为纯人工生产。[OpenAI 服务条款](https://openai.com/policies/terms-of-use/)
 - OpenAI 赋予输出的权利不等于第三方图片、商标、书籍文本、数据和未获许可内容全部可以商用。
 - 不使用虚构好评、假客户故事、刷量营销和无授权敏感数据。
-- ChatGPT 个人订阅与 API 分别计费：[官方说明](https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus)。
+- ChatGPT 个人订阅与 API 分别计费：[官方说明](https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform)。
 - 数据处理应遵循客户合同、适用法律和组织规定；不同套餐对数据控制的规定可能不同：[数据控制文档](https://help.openai.com/en/articles/7730893-data-controls-in-chatgpt)。
 - 求职咨询可帮助本人优化真实履历；不能把模型输出作为针对个人就业等有重大影响事项的自动化决策依据。
 - 本指南不是法律、税务或财务建议，不提供收益承诺。
@@ -120,6 +128,8 @@ python3 -m http.server 8000
 python3 -m unittest discover -s tests -v
 node --check app.js
 node --check data/catalog.js
+node --check lib/economics.js
+node tests/test_economics.cjs
 ```
 
 ## 🤝 贡献与授权

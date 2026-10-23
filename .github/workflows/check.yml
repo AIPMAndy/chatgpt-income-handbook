@@ -18,3 +18,6 @@ jobs:
         run: |
           node --check app.js
           node --check data/catalog.js
+          node --check lib/economics.js
+      - name: Test negative financial scenarios
+        run: node tests/test_economics.cjs

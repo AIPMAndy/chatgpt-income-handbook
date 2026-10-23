@@ -42,21 +42,23 @@ let promptCat='全部',promptQuery='',onlyFavorite=false;const cats=['全部',..
 function renderPrompts(){const arr=D.prompts.filter(p=>(promptCat==='全部'||p.category===promptCat)&&(!onlyFavorite||has('favorite',p.id))&&[p.title,p.prompt,p.scenario,p.stage].join(' ').toLowerCase().includes(promptQuery.toLowerCase()));$('#promptCount').textContent=`显示 ${arr.length} / ${D.prompts.length} 套工作指令`;
  $('#promptGrid').innerHTML=arr.length?arr.map(p=>`<article class="prompt-card"><div class="prompt-card-head"><span>${escapeHtml(p.category)} / ${escapeHtml(p.stage)}</span><button type="button" class="favorite-btn ${has('favorite',p.id)?'active':''}" data-favorite="${p.id}" aria-pressed="${has('favorite',p.id)}" title="收藏${escapeHtml(p.title)}">${has('favorite',p.id)?'♥':'♡'}</button></div><h3>${escapeHtml(p.title)}</h3><p>交付：${escapeHtml(p.deliverable)}</p><div class="prompt-preview">${escapeHtml(p.prompt.slice(0,120))}…</div><div class="prompt-actions"><button type="button" data-copy-prompt="${p.id}">复制完整提示词 ↗</button><button type="button" data-expand-prompt="${p.id}">查看全文 +</button></div><details id="prompt-${p.id}"><summary>完整提示词与使用边界</summary><pre>${escapeHtml(p.prompt)}</pre></details></article>`).join(''):'<p>没有匹配的提示词。</p>';
  $('#promptFilters').querySelectorAll('[data-prompt-cat]').forEach(b=>b.classList.toggle('active',b.dataset.promptCat===promptCat));}
-// Unit economics: illustrative math only; no earnings forecasts.
-const calcIds=['calcPrice','calcOrders','calcCost','calcHours','calcFixed','calcReserve','calcAcqHours','calcReworkHours','calcRefundRate','calcFeeRate'];
-const money=(n)=>Number.isFinite(n)?'¥'+n.toLocaleString('zh-CN',{maximumFractionDigits:2,minimumFractionDigits:0}):'—';
-const num=id=>{let n=Number($('#'+id).value);return Number.isFinite(n)?Math.max(0,n):0;};
+// Pure scenario math is unit-tested with Node.js; no earnings forecasting.
+const E=window.ChatGPTIncomeEconomics;
+if(!E||typeof E.calculate!=='function')throw new Error('Income calculator not loaded');
+const calcIds=['calcPrice','calcOrders','calcCost','calcHours','calcFixed','calcReserve','calcAcqHours','calcReworkHours','calcRefundRate','calcFeeRate','calcUnconvertedHours','calcLaborRate','calcAcquisitionSpend'];
+const money=n=>Number.isFinite(n)?'¥'+n.toLocaleString('zh-CN',{maximumFractionDigits:2,minimumFractionDigits:0}):'—';
+const num=id=>{const n=Number($('#'+id).value);return Number.isFinite(n)?Math.max(0,n):0;};
 function calculate(){
- const price=num('calcPrice'),orders=Math.min(100000,Math.floor(num('calcOrders'))),direct=num('calcCost'),hours=num('calcHours'),fixed=num('calcFixed');
- const acqHours=num('calcAcqHours'),reworkHours=num('calcReworkHours');
- const reserve=Math.min(100,num('calcReserve'))/100,refund=Math.min(100,num('calcRefundRate'))/100,fee=Math.min(100,num('calcFeeRate'))/100;
- const gross=price*orders,revenue=gross*(1-refund),feeAmount=gross*fee;
- const margin=revenue-direct*orders-fixed-feeAmount,net=margin-Math.max(0,margin)*reserve;
- const totalHours=orders*(hours+acqHours+reworkHours);
- $('#calcRevenue').textContent=money(revenue);$('#calcMargin').textContent=money(margin);$('#calcNet').textContent=money(net);$('#calcTotalHours').textContent=totalHours.toLocaleString('zh-CN',{maximumFractionDigits:2})+' h';$('#calcHourly').textContent=totalHours>0?money(net/totalHours):'—';
- return {price,orders,direct,hours,fixed,reserve:reserve*100,refund:refund*100,fee:fee*100,acqHours,reworkHours,gross,revenue,margin,net,totalHours};
+ const x=E.calculate({price:num('calcPrice'),orders:num('calcOrders'),direct:num('calcCost'),hours:num('calcHours'),fixed:num('calcFixed'),reserveRate:num('calcReserve'),acqHours:num('calcAcqHours'),reworkHours:num('calcReworkHours'),refundRate:num('calcRefundRate'),feeRate:num('calcFeeRate'),unconvertedHours:num('calcUnconvertedHours'),laborRate:num('calcLaborRate'),acquisitionSpend:num('calcAcquisitionSpend')});
+ $('#calcRevenue').textContent=money(x.revenue);$('#calcMargin').textContent=money(x.margin);$('#calcNet').textContent=money(x.net);
+ $('#calcTotalHours').textContent=x.totalHours.toLocaleString('zh-CN',{maximumFractionDigits:2})+' h';
+ $('#calcHourly').textContent=x.hourlyCash===null?'—':money(x.hourlyCash);
+ $('#calcAfterLabor').textContent=money(x.afterLabor);
+ $('#calcBreakeven').textContent=x.breakevenPrice===null?'不适用':money(x.breakevenPrice);
+ $('#calcCostAlert').textContent=x.net>0&&x.afterLabor<0?'注意：现金结余为正，但计入你设定的劳动时间价值后，这个情景仍为负数。':x.orders===0?'没有成交也会花费时间与现金；工具不预测未来订单。':'纯假设算术，不代表市场价格或税务利润。';
+ return x;
 }
-calcIds.forEach(x=>$('#'+x).addEventListener('input',calculate));calculate();
+calcIds.forEach(id=>$('#'+id).addEventListener('input',calculate));calculate();
 // Quote draft: ephemeral user text, never put into innerHTML or localStorage.
 $('#proposalOffer').innerHTML=D.offers.map(o=>`<option value="${escapeHtml(o.id)}">${escapeHtml(o.name)}</option>`).join('');
 let proposalText='';
@@ -82,6 +84,20 @@ function renderPrivacy(){const typ=$('#privacyType').value,permit=$('#privacyAll
  else msg='仅对获授权的公开资料进行最小必要处理。仍须检查第三方版权及事实准确性。';
  $('#privacyResult').textContent=msg;$('#privacyResult').classList.toggle('warning',typ!=='public'||permit!=='yes'||env!=='yes');}
 ['#privacyType','#privacyAllowed','#privacyEnvironment'].forEach(x=>$(x).addEventListener('change',renderPrivacy));renderPrivacy();
+// Truthfulness gate for public case studies.
+function renderEvidence(){
+ const level=$('#evidenceLevel').value,permit=$('#evidencePermission').value,proof=$('#evidenceArtifact').value;
+ let msg;
+ if(level==='demo')msg='D 模拟：只能展示演示过程，不能声称客户已成交或有真实收入。';
+ else if(permit!=='yes')msg='没有明确公开授权：不能披露识别性客户资料或交易细节。作者自述须标注未经独立核实。';
+ else if(level==='self')msg='C 自述：可以标明作者自述和验证限制，不能冒充独立证据或收益预测。';
+ else if(level==='accepted')msg='B 验收：只能陈述客户真实签收的范围，验收不自动等于付款或盈利。';
+ else if(proof!=='yes')msg='A 级仍不成立：缺少具备公开许可的独立核查材料。';
+ else msg='具备提交 A 级人工核验的前置条件，还须逐项确认真实性、授权、数字定义和有效期；不得保证收益。';
+ $('#evidenceResult').textContent=msg;
+ $('#evidenceResult').classList.toggle('warning',level!=='public'||permit!=='yes'||proof!=='yes');
+}
+['#evidenceLevel','#evidencePermission','#evidenceArtifact'].forEach(id=>$(id).addEventListener('change',renderEvidence));renderEvidence();
 // Activity plan & case references
 function renderPlan(){$('#daysGrid').innerHTML=D.days7.map(x=>`<article class="day-card ${has('day',x.id)?'checked':''}"><div class="day-label">${escapeHtml(x.day)}</div><h3>${escapeHtml(x.title)}</h3><p>${escapeHtml(x.deliverable)}</p><label class="day-check"><input type="checkbox" data-day="${x.id}" ${has('day',x.id)?'checked':''}> 我实际完成了</label></article>`).join('');
  $('#weeksGrid').innerHTML=D.weeks30.map(x=>`<article class="week-card"><span>${escapeHtml(x.week)}</span><strong>${escapeHtml(x.title)}</strong><p>${escapeHtml(x.deliverable)}</p></article>`).join('');}
@@ -104,7 +120,15 @@ $('#sourcesGrid').innerHTML=D.sources.map(x=>`<a class="source-card" href="${esc
  $('#lessonSearch').addEventListener('input',e=>{lessonSearch=e.target.value.trim();renderLessons();});$('#lessonCategory').addEventListener('change',e=>{lessonCat=e.target.value;renderLessons();});$('#lessonUndone').addEventListener('change',e=>{lessonUndone=e.target.checked;renderLessons();});
  $('#promptSearch').addEventListener('input',e=>{promptQuery=e.target.value.trim();renderPrompts();});$('#onlyFavorite').addEventListener('change',e=>{onlyFavorite=e.target.checked;renderPrompts();});$('#clearPrompts').addEventListener('click',()=>{promptQuery='';promptCat='全部';onlyFavorite=false;$('#promptSearch').value='';$('#onlyFavorite').checked=false;renderPrompts();});
  $('#faqSearch').addEventListener('input',e=>{faqQuery=e.target.value.trim();renderFaq();});
- $('#copyCalc').addEventListener('click',()=>{let x=calculate();copyText(`ChatGPT服务报价情景（纯假设，非收益预测）\n报价：${x.price}元；假设单数：${x.orders}；每单直接成本：${x.direct}元；每单工时：${x.hours}小时；获客工时：${x.acqHours}小时/单；返工预留：${x.reworkHours}小时/单；退款比例：${x.refund}%；平台费率：${x.fee}%；固定费用：${x.fixed}元；税费及其他预留：${x.reserve}%\n折算退款后收入：${x.revenue}元；扣除部分成本：${x.margin}元；预留后估算结余：${x.net}元；总交付时长：${x.totalHours}小时。\n退款、手续费与部分工时已作为假设纳入，但未成交开发投入、实际税务与其他成本仍可能被低估。`);});
+ $('#copyCalc').addEventListener('click',()=>{const x=calculate();copyText(
+  'ChatGPT 服务报价情景（仅模拟算术）\n'+
+  '单价：'+x.price+'元；订单：'+x.orders+'；退款：'+(x.refundRate*100)+'%；手续费：'+(x.feeRate*100)+'%\n'+
+  '每单直接成本：'+x.direct+'元；固定费用：'+x.fixed+'元；获客现金支出：'+x.acquisitionSpend+'元\n'+
+  '每单制作：'+x.hours+'h；沟通：'+x.acqHours+'h；返工：'+x.reworkHours+'h；未成交线索：'+x.unconvertedHours+'h\n'+
+  '个人劳动时间价值：'+x.laborRate+'元/h；预留率：'+(x.reserveRate*100)+'%\n'+
+  '退款后收入：'+x.revenue+'元；预留后现金结余：'+x.net+'元；总工时：'+x.totalHours+'h；计入劳动后的差额：'+x.afterLabor+'元；人工保本单价（未含预留）：'+(x.breakevenPrice===null?'不适用':x.breakevenPrice.toFixed(2)+'元')+'\n'+
+  '此处全部是输入假设，不预测真实成交、收入或税额。'
+ );});
  $('#exportProgress').addEventListener('click',()=>{let finished=D.chapters.filter(x=>has('finished',x.id)).map(x=>'- '+x.title),days=D.days7.filter(x=>has('day',x.id)).map(x=>'- '+x.day+' '+x.title),fav=D.prompts.filter(x=>has('favorite',x.id)).map(x=>'- '+x.title);let content=['# ChatGPT 赚钱攻略学习记录','导出日期：'+new Date().toLocaleDateString('zh-CN'),'','## 已完成章节',...(finished.length?finished:['（无）']),'','## 已完成练习',...(days.length?days:['（无）']),'','## 收藏的提示词',...(fav.length?fav:['（无）']),'','提醒：学习记录不代表收入。'].join('\n');const u=URL.createObjectURL(new Blob([content],{type:'text/markdown;charset=utf-8'}));let a=document.createElement('a');a.href=u;a.download='ChatGPT-第一单练习记录.md';a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);});
  $('#closeDialog').addEventListener('click',()=>$('#lessonDialog').close());$('#lessonDialog').addEventListener('click',e=>{if(e.target===$('#lessonDialog'))$('#lessonDialog').close();});
  renderOffers();renderLessons();renderPrompts();renderPlan();renderFaq();

@@ -11,7 +11,7 @@
 - [ChatGPT Business 数据与隐私](https://help.openai.com/en/articles/8798634-managing-data-sharing-and-privacy-in-chatgpt-business) — Business 默认不把工作区数据用于训练
 - [ChatGPT 产品能力概览](https://help.openai.com/en/articles/9260256-chatgpt-capabilities-overview) — 搜索、数据分析、Projects、GPTs，因套餐权限不同
 - [OpenAI 使用政策](https://openai.com/policies/usage-policies/) — 防欺诈、隐私、人为审查及允许的使用
-- [ChatGPT 与 API 分开计费](https://help.openai.com/en/articles/9039756-managing-billing-settings-on-the-chatgpt-web-and-api-platform) — API 属于单独账单体系
+- [ChatGPT 与 API 分开计费](https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform) — API 属于单独账单体系
 - [ChatGPT 共享链接与权限](https://help.openai.com/en/articles/7925741-chatgpt-shared-links-faq) — 个人共享链接的可见范围、共享前预览和隐私
 - [OpenAI Business 数据隐私说明](https://openai.com/business-data/) — Business/Enterprise/API 默认不用于模型训练的隐私约定
 - [OpenAI Business 条款](https://openai.com/policies/business-terms/) — 商业客户输入、输出权利与客户侧数据责任

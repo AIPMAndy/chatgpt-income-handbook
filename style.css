@@ -51,3 +51,12 @@
 @media(max-width:930px){.topbar nav>a:not(.nav-contact){display:none}.header-inner{gap:12px}}
 @media(max-width:770px){.topbar nav>a.nav-contact{display:inline-flex}.topbar nav>a.nav-github{display:none}.topbar nav{gap:7px}.hero-contact-strip{margin-top:22px;padding:16px}.hero-contact-identity{gap:10px 13px}}
 @media(max-width:370px){.topbar .header-inner{gap:7px}.logo{gap:8px}.logo-icon{width:32px;height:32px;font-size:25px}.logo b{font-size:10px}.logo small{font-size:7px}.topbar nav .nav-contact{font-size:11px;padding:7px 9px}}
+
+/* v2.2: labor-aware calculation and case-evidence gate */
+.calc-cost-alert{margin:19px 0 6px;padding:11px 14px;background:#fff2df;color:#73472b;border-radius:8px;font-size:12px;line-height:1.75}
+.evidence-section{background:#f8faf5;border-top:1px solid #dce8d6;border-bottom:1px solid #dce8d6}
+.evidence-gate{max-width:100%;padding:30px}
+.evidence-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.evidence-fields label{display:flex;flex-direction:column;gap:10px;font-size:12px;font-weight:800;color:#435948}
+.evidence-fields select{width:100%;padding:12px;border-radius:8px;border:1px solid #adc3b0;font:inherit;background:#fff;color:#274436;min-width:0}
+@media(max-width:780px){.evidence-fields{grid-template-columns:1fr}.evidence-gate{padding:22px}}

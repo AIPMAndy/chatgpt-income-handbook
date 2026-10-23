@@ -3,7 +3,7 @@
     "title": "用 ChatGPT 赚钱保姆级攻略",
     "subtitle": "从真实需求、试单到可验收交付与复购",
     "updated": "2026-10-22",
-    "version": "2.0.0",
+    "version": "2.2.0",
     "author": "AI 酋长 Andy",
     "contact": "AIPMAndy",
     "site": "https://metaver.vip/",
@@ -69,7 +69,7 @@
     {
       "id": "api",
       "name": "ChatGPT 与 API 分开计费",
-      "url": "https://help.openai.com/en/articles/9039756-managing-billing-settings-on-the-chatgpt-web-and-api-platform",
+      "url": "https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform",
       "scope": "API 属于单独账单体系"
     },
     {

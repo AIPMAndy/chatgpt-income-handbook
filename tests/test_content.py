@@ -88,6 +88,26 @@ class HandbookTests(unittest.TestCase):
   self.assertIn('.topbar nav>a.nav-contact{display:inline-flex}',css)
   self.assertIn('微信：`AIPMAndy`',readme)
   self.assertIn('metaver.vip/services',readme)
+ def test_audit_v22_interactive_and_claims(self):
+  html=(ROOT/'index.html').read_text(encoding='utf-8')
+  app=(ROOT/'app.js').read_text(encoding='utf-8')
+  for ident in ['calcUnconvertedHours','calcLaborRate','calcAcquisitionSpend','calcAfterLabor','calcBreakeven','evidenceLevel','evidencePermission','evidenceArtifact','evidenceResult']:
+   self.assertIn('id="'+ident+'"',html)
+   self.assertIn(ident,app)
+  self.assertIn('lib/economics.js',html)
+  self.assertIn('ChatGPTIncomeEconomics',app)
+  self.assertIn('docs/END-TO-END-TRIAL.md',html)
+ def test_release_qa_current(self):
+  txt=(ROOT/'docs/RELEASE-QA.md').read_text(encoding='utf-8')
+  for term in ['34 章','64 套','36 个','45 个','未实际测试']:
+   self.assertIn(term,txt)
+  for stale in ['仓库尚未创建','Pages 尚未发布','26 章','48 套']:
+   self.assertNotIn(stale,txt)
+ def test_math_runs_before_pages(self):
+  for name in ['.github/workflows/check.yml','.github/workflows/deploy-pages.yml']:
+   txt=(ROOT/name).read_text(encoding='utf-8')
+   self.assertIn('node tests/test_economics.cjs',txt)
+   self.assertIn('node --check lib/economics.js',txt)
  def test_pages_quality_gate(self):
   y=(ROOT/'.github/workflows/deploy-pages.yml').read_text(encoding='utf-8')
   self.assertIn('needs: verify',y)
@@ -143,13 +163,10 @@ class HandbookTests(unittest.TestCase):
   self.assertIn('textContent=proposalText',js) # user's raw text never injected into HTML
   self.assertIn("permit==='no'||env==='no'",js)
  def test_v2_cost_arithmetic_has_human_labor_and_refunds(self):
-  js=(ROOT/'app.js').read_text(encoding='utf-8')
-  self.assertIn('gross*(1-refund)',js)
-  self.assertIn('orders*(hours+acqHours+reworkHours)',js)
-  self.assertIn('gross*fee',js)
-  self.assertIn('margin-Math.max(0,margin)*reserve',js)
-  h=(ROOT/'index.html').read_text(encoding='utf-8')
-  self.assertIn('未成交线索',h)
+  js=(ROOT/'lib/economics.js').read_text(encoding='utf-8')
+  for term in ['gross * (1 - refundRate)','orders * (hours + acqHours + reworkHours) + unconvertedHours','gross * feeRate','margin - Math.max(0, margin) * reserveRate','totalHours * laborRate']:
+   self.assertIn(term,js)
+  self.assertIn('未成交线索',(ROOT/'index.html').read_text(encoding='utf-8'))
  def test_sop_and_new_templates_in_repository(self):
   for x in ['docs/SERVICE-SOPS.md','docs/PRIVACY-SOP.md','docs/CLAIM-LEDGER.md','docs/QUALITY-METHOD.md','docs/DEMO-CASE-LAB.md','templates/ACCEPTANCE-REPORT.md','templates/CHANGE-REQUEST.md','templates/PRIVACY-CONSENT.md','templates/FAILURE-RETRO.md','templates/AI-DISCLOSURE.md']:
    self.assertGreater((ROOT/x).stat().st_size,120,x)
