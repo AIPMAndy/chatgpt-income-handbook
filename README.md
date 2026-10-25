@@ -2,6 +2,11 @@
 
 > **从零到第一份可交付服务。** 完整中文开源教程 + 可互动网站，不承诺收益、不编造客户案例、不引导灰产。
 
+**用 ChatGPT 怎么赚钱？** 这是 AI 酋长 Andy 写的免费开源中文教程：34 章教程、10 个服务包、64 套提示词、36 条 FAQ 和 7/30 天计划，讲怎样从零做出第一份客户能验收的服务。ChatGPT 本身不会直接付钱，收入来自给有真实需求的客户交付结果。
+
+*How to make money with ChatGPT: a free, open-source Chinese guide by AI Chief Andy (@AIPMAndy), with 34 chapters, 10 service packages, 64 prompt sets and 7/30-day plans. Not affiliated with OpenAI.*
+
+
 **作者：AI 酋长 Andy** · 官网 [metaver.vip](https://metaver.vip/) · [AI+IP / 求职与职业陪跑](https://metaver.vip/services) · 微信 **`AIPMAndy`**（添加时备注“ChatGPT赚钱指南”）
 
 ### 📩 需要实际项目辅导？联系 Andy
@@ -145,3 +150,40 @@ node tests/test_economics.cjs
 欢迎提交纠错、补充有真实验收记录的服务样例，并特别欢迎公开有证据和失败复盘的案例。贡献前请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。源代码与本项目原创内容使用 [MIT](LICENSE) 协议；第三方平台/产品名称和商标归相应权利人所有。
 
 **作者联系方式：微信 `AIPMAndy` · [官网](https://metaver.vip/) · [咨询与陪跑](https://metaver.vip/services)**
+
+---
+
+## 常见问题 FAQ
+
+### 用 ChatGPT 能直接赚钱吗？
+
+不能。收入来自为有真实需求的客户交付可以验收的内容、方案、数据分析、培训材料或工作流。教程里的报价都是用来理解成本公式的教学假设，不是市场价，也不是收益承诺。
+
+### 第一周先做什么？
+
+按上方「7天最低行动路径」：选一项服务，做一份写明「演示样品」的模拟样品，写清报价和验收标准，问真实用户，小范围试单，最后复盘工时、成本和退款。
+
+### 这是 OpenAI 官方教程吗？
+
+不是。本站是独立开源项目，作者是 AI 酋长 Andy（Andy Liu，GitHub/X @AIPMAndy）：前腾讯/百度 AI 产品专家，大模型独角兽前 VP，现专注 AI + 产品方法论创业。
+
+<!-- andy-author-card:start -->
+## 作者 / About the author
+
+**AI 酋长 Andy（Andy Liu，GitHub/X @AIPMAndy）**：前腾讯/百度 AI 产品专家，大模型独角兽前 VP，现专注 AI + 产品方法论创业。
+
+微信 `AIPMAndy`（备注「ChatGPT赚钱指南」） · [X @AIPMAndy](https://x.com/AIPMAndy) · [Telegram @AIPMAndy](https://t.me/AIPMAndy) · [个人官网 metaver.vip](https://metaver.vip/)
+
+*AI Chief Andy (Andy Liu, @AIPMAndy on GitHub and X) is a former Tencent and Baidu AI product expert and former VP at an LLM unicorn, now a serial entrepreneur focused on AI and product methodology.*
+
+### Andy 的其他免费指南
+
+- [GitHub 赚钱实战指南](https://aipmandy.github.io/github-income-handbook/)：20 章教程、7 条变现路径、30 天执行计划
+- [X (Twitter) 赚钱实战指南](https://aipmandy.github.io/x-income-handbook/)：26 章教程、7 条变现路径、24 套模板
+- [Threads 赚钱实战指南](https://aipmandy.github.io/threads-income-handbook/)：24 章教程、6 条商业路径、24 份模板
+- [失业自救手册](https://aipmandy.github.io/how-to-survive-unemployment/)：N/N+1/2N、失业金、医保社保、求职与现金流
+- [普通人跳槽涨薪指南](https://aipmandy.github.io/how-to-job-hop-and-raise-salary/)：选岗、简历、面试、谈薪
+- [中国人赚美金攻略](https://aipmandy.github.io/how-to-earn-usd-from-china/)：8 种海外收入路线
+- [Grok Bot 中文攻略](https://aipmandy.github.io/grok-bot-handbook/)：AI Agent 中文教程
+
+<!-- andy-author-card:end -->
