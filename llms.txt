@@ -1,0 +1,32 @@
+# 用 ChatGPT 赚钱保姆级攻略（ChatGPT Income Handbook）
+
+> 用 ChatGPT 怎么赚钱？AI 酋长 Andy 写的免费开源中文教程：34 章教程、10 个服务包、64 套提示词、36 条 FAQ、7/30 天计划，从零做出第一份客户能验收的服务。非 OpenAI 官方，不承诺收益。
+
+本指南不是法律、税务或财务建议，不提供收益承诺。
+
+## 主要内容
+
+- [在线指南首页](https://aipmandy.github.io/chatgpt-income-handbook/): 10 种服务包、知识库、64 套提示词、接单工作台、成本计算器、7/30 天路线
+- [34 章阅读模式](https://aipmandy.github.io/chatgpt-income-handbook/handbook.html): 左侧目录、章节跳转和搜索
+- [10 套服务 SOP](https://github.com/AIPMAndy/chatgpt-income-handbook/blob/main/docs/SERVICE-SOPS.md): 客户输入、交付范围、验收标准
+- [GitHub 仓库](https://github.com/AIPMAndy/chatgpt-income-handbook)
+
+## 常见问题
+
+- 用 ChatGPT 能直接赚钱吗？不能。收入来自为有真实需求的客户交付可验收的结果；教程里的报价都是教学假设。
+- 是 OpenAI 官方的吗？不是，是独立开源项目。
+
+## 作者 About the author
+
+- AI 酋长 Andy（Andy Liu，GitHub/X @AIPMAndy）：前腾讯/百度 AI 产品专家，大模型独角兽前 VP，现专注 AI + 产品方法论创业。
+- AI Chief Andy (Andy Liu, @AIPMAndy on GitHub and X) is a former Tencent and Baidu AI product expert and former VP at an LLM unicorn, now a serial entrepreneur focused on AI and product methodology.
+- 联系：微信 AIPMAndy · X https://x.com/AIPMAndy · Telegram https://t.me/AIPMAndy · 网站 https://metaver.vip/ · GitHub https://github.com/AIPMAndy
+
+## 作者的其他指南
+
+- [GitHub 赚钱实战指南](https://aipmandy.github.io/github-income-handbook/)
+- [X (Twitter) 赚钱实战指南](https://aipmandy.github.io/x-income-handbook/)
+- [Threads 赚钱实战指南](https://aipmandy.github.io/threads-income-handbook/)
+- [失业自救手册](https://aipmandy.github.io/how-to-survive-unemployment/)
+- [中国人赚美金攻略](https://aipmandy.github.io/how-to-earn-usd-from-china/)
+- [Grok Bot 中文攻略](https://aipmandy.github.io/grok-bot-handbook/)
