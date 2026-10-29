@@ -21,6 +21,14 @@
 
 **互动网站**：https://aipmandy.github.io/chatgpt-income-handbook/ （已配置自动部署；以上线状态为准）
 
+
+## 苹果风品牌首页 / 专业手册 / 实操工作台（2026-10-29）
+
+- [品牌首页](https://aipmandy.github.io/chatgpt-income-handbook/)：克制的极简产品介绍、项目价值和开始学习入口。
+- [独立 34 章知识库](https://aipmandy.github.io/chatgpt-income-handbook/handbook.html)：章节搜索、前后篇和完成进度。
+- [完整业务工作台](https://aipmandy.github.io/chatgpt-income-handbook/workbench.html)：10 种服务、64 套提示词、报价草稿、资料权限、成本工具、案例证据分级均保留。
+- 作者微信 `AIPMAndy` · [官网](https://metaver.vip/) · [咨询服务](https://metaver.vip/services)。本指南仍为独立开源项目，不承诺收入。
+
 ## 🧭 v4.0 网站体验升级（2026-10-22）
 
 - 改为「知识库 / 实践手册」的双栏导航体系，保留既有网站功能与课程数据，不再用大型营销海报充当内容。

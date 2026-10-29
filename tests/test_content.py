@@ -56,25 +56,25 @@ class HandbookTests(unittest.TestCase):
    self.assertIn('未',x['evidence'])
    self.assertTrue(x['notClaim'])
  def test_site_dom_refs(self):
-  html=(ROOT/'index.html').read_text(encoding='utf-8')
+  html=(ROOT/'workbench.html').read_text(encoding='utf-8')
   ids=re.findall(r'\bid="([\w-]+)"',html)
   self.assertEqual(len(ids),len(set(ids)))
   js=(ROOT/'app.js').read_text(encoding='utf-8')
   refs=re.findall(r"\$\('#([A-Za-z][A-Za-z0-9-]*)'\)",js)
   self.assertTrue(set(refs)<=set(ids),sorted(set(refs)-set(ids)))
  def test_site_local_assets(self):
-  html=(ROOT/'index.html').read_text(encoding='utf-8')
+  html=(ROOT/'workbench.html').read_text(encoding='utf-8')
   for attr in ['src','href']:
    for v in re.findall(r'\b'+attr+r'="([^"]+)"',html):
     if v.startswith(('https://','mailto:','#')):continue
     self.assertTrue((ROOT/v.split('#')[0]).exists(),v)
  def test_safe_commercial_links(self):
-  html=(ROOT/'index.html').read_text(encoding='utf-8')
+  html=(ROOT/'workbench.html').read_text(encoding='utf-8')
   self.assertIn('AIPMAndy',html)
   self.assertIn('https://metaver.vip/',html)
   self.assertIn('https://metaver.vip/services',html)
  def test_contact_visible_in_hero_nav_modal_and_footer(self):
-  html=(ROOT/'index.html').read_text(encoding='utf-8')
+  html=(ROOT/'workbench.html').read_text(encoding='utf-8')
   js=(ROOT/'app.js').read_text(encoding='utf-8')
   css=(ROOT/'style.css').read_text(encoding='utf-8')
   readme=(ROOT/'README.md').read_text(encoding='utf-8')
@@ -89,7 +89,7 @@ class HandbookTests(unittest.TestCase):
   self.assertIn('微信：`AIPMAndy`',readme)
   self.assertIn('metaver.vip/services',readme)
  def test_audit_v22_interactive_and_claims(self):
-  html=(ROOT/'index.html').read_text(encoding='utf-8')
+  html=(ROOT/'workbench.html').read_text(encoding='utf-8')
   app=(ROOT/'app.js').read_text(encoding='utf-8')
   for ident in ['calcUnconvertedHours','calcLaborRate','calcAcquisitionSpend','calcAfterLabor','calcBreakeven','evidenceLevel','evidencePermission','evidenceArtifact','evidenceResult']:
    self.assertIn('id="'+ident+'"',html)
@@ -130,7 +130,7 @@ class HandbookTests(unittest.TestCase):
   for name in {x['scenario'] for x in J['prompts']}:
    self.assertEqual(len([x for x in J['prompts'] if x['scenario']==name]),4,name)
  def test_calc_label_says_illustrative(self):
-  h=(ROOT/'index.html').read_text(encoding='utf-8')
+  h=(ROOT/'workbench.html').read_text(encoding='utf-8')
   self.assertIn('纯假设测算',h)
   self.assertIn('真实收入可能为 0 或负数',h)
  def test_source_index_references(self):
@@ -155,7 +155,7 @@ class HandbookTests(unittest.TestCase):
    self.assertTrue(all(x.get(k) for k in ['input','process','output','qa','failure','evidence']))
   self.assertIn('模拟交付案例', (ROOT/'docs/DEMO-CASE-LAB.md').read_text(encoding='utf-8'))
  def test_v2_interactive_tools_exist(self):
-  h=(ROOT/'index.html').read_text(encoding='utf-8')
+  h=(ROOT/'workbench.html').read_text(encoding='utf-8')
   js=(ROOT/'app.js').read_text(encoding='utf-8')
   for id in ['proposalOffer','proposalProblem','proposalDeadline','makeProposal','copyProposal','proposalOutput','privacyType','privacyAllowed','privacyEnvironment','privacyResult','readinessResult','calcAcqHours','calcReworkHours','calcRefundRate','calcFeeRate']:
    self.assertIn('id="'+id+'"',h)
@@ -166,7 +166,7 @@ class HandbookTests(unittest.TestCase):
   js=(ROOT/'lib/economics.js').read_text(encoding='utf-8')
   for term in ['gross * (1 - refundRate)','orders * (hours + acqHours + reworkHours) + unconvertedHours','gross * feeRate','margin - Math.max(0, margin) * reserveRate','totalHours * laborRate']:
    self.assertIn(term,js)
-  self.assertIn('未成交线索',(ROOT/'index.html').read_text(encoding='utf-8'))
+  self.assertIn('未成交线索',(ROOT/'workbench.html').read_text(encoding='utf-8'))
  def test_sop_and_new_templates_in_repository(self):
   for x in ['docs/SERVICE-SOPS.md','docs/PRIVACY-SOP.md','docs/CLAIM-LEDGER.md','docs/QUALITY-METHOD.md','docs/DEMO-CASE-LAB.md','templates/ACCEPTANCE-REPORT.md','templates/CHANGE-REQUEST.md','templates/PRIVACY-CONSENT.md','templates/FAILURE-RETRO.md','templates/AI-DISCLOSURE.md']:
    self.assertGreater((ROOT/x).stat().st_size,120,x)

@@ -1,0 +1,22 @@
+:root{--line:#e5e5e9;--ink:#1d1d1f;--muted:#6e6e73;--blue:#0066cc}
+body{background:#fff;color:#1d1d1f;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC",sans-serif;font-size:14px}
+.reader-header{background:rgba(251,251,253,.85);backdrop-filter:blur(18px) saturate(160%);border-color:#e5e5e9}
+.reader-brand .mark{background:#1d1d1f;border-radius:12px}
+.reader-brand b{color:#1d1d1f;font-size:13px}.reader-brand small{color:#86868b}
+.reader-header nav a{color:#555;font-size:12px}.reader-header nav a:hover{color:#0066cc}
+.reader-contact{background:#1d1d1f;border-radius:999px;padding:10px 16px}
+.reader-sidebar{background:#fbfbfd;border-color:#e5e5e9}
+.side-top h2{font-size:22px;color:#1d1d1f}.side-top p{color:#6e6e73}
+.reader-search{background:#fff;border-radius:13px;border-color:#e5e5e9}
+.nav-group a{border-radius:10px;color:#555;font-size:12px}
+.nav-group a:hover{background:#eeeef2;color:#1d1d1f}.nav-group a.active{background:#e8f1ff;color:#0066cc}
+.side-cta{background:#fff;border-color:#e5e5e9;border-radius:18px}
+.side-cta button,.side-cta a{color:#0066cc}
+.article-width{max-width:850px}
+.chapter-header h1{color:#1d1d1f;font-size:clamp(32px,3.5vw,48px)}
+.chapter-badge{border-radius:999px;background:#f2f2f4;color:#6e6e73}
+.article-body{font-size:15px;line-height:1.85}
+.article-section h2{color:#1d1d1f}
+.reader-bottom{border-radius:22px}
+.reader-toc{border-color:#e5e5e9}
+@media(max-width:800px){.reader-header nav{gap:10px}}

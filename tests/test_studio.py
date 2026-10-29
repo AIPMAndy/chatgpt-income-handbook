@@ -31,17 +31,22 @@ class StudioUXTests(unittest.TestCase):
             else:
                 self.assertIn(thing, s)
 
-    def test_home_links_to_reader_and_real_demo(self):
-        s = (ROOT / 'index.html').read_text(encoding='utf-8')
-        self.assertIn('href="handbook.html"', s)
-        self.assertIn('class="site-aside"', s)
-        self.assertIn('class="deliverable-panel"', s)
-        self.assertIn('模拟案例', s)
-        self.assertIn('docs/END-TO-END-TRIAL.md', s)
-        self.assertIn('class="hero-contact-strip"', s)
+    def test_new_home_and_workbench_are_distinct(self):
+        home=(ROOT/'index.html').read_text(encoding='utf-8')
+        workbench=(ROOT/'workbench.html').read_text(encoding='utf-8')
+        self.assertIn('href="handbook.html"',home)
+        self.assertIn('href="workbench.html"',home)
+        self.assertIn('href="apple-home.css"',home)
+        self.assertIn('方法示意',home)
+        self.assertIn('AIPMAndy',home)
+        self.assertIn('class="site-aside"',workbench)
+        self.assertIn('class="deliverable-panel"',workbench)
+        self.assertIn('模拟案例',workbench)
+        self.assertIn('docs/END-TO-END-TRIAL.md',workbench)
+        self.assertIn('class="hero-contact-strip"',workbench)
 
     def test_all_new_local_refs(self):
-        for file in ['index.html','handbook.html']:
+        for file in ['index.html','handbook.html','workbench.html']:
             html=parse(file)
             for tag,attrs in html:
                 if tag not in ('link','script','a'): continue
