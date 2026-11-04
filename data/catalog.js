@@ -4,7 +4,7 @@ window.CHATGPT_INCOME_DATA = {
     "subtitle": "从真实需求、试单到可验收交付与复购",
     "updated": "2026-10-22",
     "version": "2.2.0",
-    "author": "AI 酋长 Andy",
+    "author": "AI酋长Andy",
     "contact": "AIPMAndy",
     "site": "https://metaver.vip/",
     "services": "https://metaver.vip/services",

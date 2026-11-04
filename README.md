@@ -2,12 +2,12 @@
 
 > **从零到第一份可交付服务。** 完整中文开源教程 + 可互动网站，不承诺收益、不编造客户案例、不引导灰产。
 
-**用 ChatGPT 怎么赚钱？** 这是 AI 酋长 Andy 写的免费开源中文教程：34 章教程、10 个服务包、64 套提示词、36 条 FAQ 和 7/30 天计划，讲怎样从零做出第一份客户能验收的服务。ChatGPT 本身不会直接付钱，收入来自给有真实需求的客户交付结果。
+**用 ChatGPT 怎么赚钱？** 这是 AI酋长Andy 写的免费开源中文教程：34 章教程、10 个服务包、64 套提示词、36 条 FAQ 和 7/30 天计划，讲怎样从零做出第一份客户能验收的服务。ChatGPT 本身不会直接付钱，收入来自给有真实需求的客户交付结果。
 
 *How to make money with ChatGPT: a free, open-source Chinese guide by AI Chief Andy (@AIPMAndy), with 34 chapters, 10 service packages, 64 prompt sets and 7/30-day plans. Not affiliated with OpenAI.*
 
 
-**作者：AI 酋长 Andy** · 官网 [metaver.vip](https://metaver.vip/) · [AI+IP / 求职与职业陪跑](https://metaver.vip/services) · 微信 **`AIPMAndy`**（添加时备注“ChatGPT赚钱指南”）
+**作者：AI酋长Andy** · 官网 [metaver.vip](https://metaver.vip/) · [AI+IP / 求职与职业陪跑](https://metaver.vip/services) · 微信 **`AIPMAndy`**（添加时备注“ChatGPT赚钱指南”）
 
 ### 📩 需要实际项目辅导？联系 Andy
 
@@ -173,12 +173,12 @@ node tests/test_economics.cjs
 
 ### 这是 OpenAI 官方教程吗？
 
-不是。本站是独立开源项目，作者是 AI 酋长 Andy（Andy Liu，GitHub/X @AIPMAndy）：前腾讯/百度 AI 产品专家，大模型独角兽前 VP，现专注 AI + 产品方法论创业。
+不是。本站是独立开源项目，作者是 AI酋长Andy（Andy Liu，GitHub/X @AIPMAndy）：前腾讯/百度 AI 产品专家，大模型独角兽前 VP，现专注 AI + 产品方法论创业。
 
 <!-- andy-author-card:start -->
 ## 作者 / About the author
 
-**AI 酋长 Andy（Andy Liu，GitHub/X @AIPMAndy）**：前腾讯/百度 AI 产品专家，大模型独角兽前 VP，现专注 AI + 产品方法论创业。
+**AI酋长Andy（Andy Liu，GitHub/X @AIPMAndy）**：前腾讯/百度 AI 产品专家，大模型独角兽前 VP，现专注 AI + 产品方法论创业。
 
 微信 `AIPMAndy`（备注「ChatGPT赚钱指南」） · [X @AIPMAndy](https://x.com/AIPMAndy) · [Telegram @AIPMAndy](https://t.me/AIPMAndy) · [个人官网 metaver.vip](https://metaver.vip/)
 
