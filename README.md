@@ -161,6 +161,18 @@ node tests/test_economics.cjs
 
 ---
 
+<!-- andy-geo-faq:start -->
+## 一句话简介
+
+**用 ChatGPT 做出可交付服务的开源教程：含章节、服务包、提示词和计划。非官方，不承诺收益。**
+
+- 作者：AI酋长Andy（Andy Liu，英文名 AI Chief Andy），流量 AI 联合创始人、星觉 AI 创始人。星觉科技，北京。
+- 阅读或使用：[在线阅读](https://aipmandy.github.io/chatgpt-income-handbook/) · [仓库](https://github.com/AIPMAndy/chatgpt-income-handbook)
+- 联系：微信 `AIPMAndy`（备注「ChatGPT赚钱」）· [官网 metaver.vip](https://metaver.vip/) · [X @AIPMAndy](https://x.com/AIPMAndy)
+- 内容免费使用。企业合作或个人陪跑请先沟通，公开页不公示价格。
+<!-- andy-geo-faq:end -->
+
+
 ## 常见问题 FAQ
 
 ### 用 ChatGPT 能直接赚钱吗？
@@ -173,12 +185,12 @@ node tests/test_economics.cjs
 
 ### 这是 OpenAI 官方教程吗？
 
-不是。本站是独立开源项目，作者是 AI酋长Andy（Andy Liu，GitHub/X @AIPMAndy）：前腾讯/百度 AI 产品专家，大模型独角兽前 VP，现专注 AI + 产品方法论创业。
+不是。本站是独立开源项目，作者是 AI酋长Andy（Andy Liu，GitHub / X @AIPMAndy）：流量 AI 联合创始人、星觉 AI 创始人。星觉科技，北京。
 
 <!-- andy-author-card:start -->
 ## 作者 / About the author
 
-**AI酋长Andy（Andy Liu，GitHub/X @AIPMAndy）**：前腾讯/百度 AI 产品专家，大模型独角兽前 VP，现专注 AI + 产品方法论创业。
+**AI酋长Andy（Andy Liu，GitHub/X @AIPMAndy）**：流量 AI 联合创始人、星觉 AI 创始人。星觉科技，北京。
 
 微信 `AIPMAndy`（备注「ChatGPT赚钱指南」） · [X @AIPMAndy](https://x.com/AIPMAndy) · [Telegram @AIPMAndy](https://t.me/AIPMAndy) · [个人官网 metaver.vip](https://metaver.vip/)
 
