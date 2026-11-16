@@ -13,7 +13,18 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Python content tests
+        with:
+          fetch-depth: 0
+      - name: Install Chinese fonts and PDF toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y fonts-noto-cjk
+          python3 -m pip install --disable-pip-version-check markdown weasyprint pymupdf pillow
+      - name: Generate PDF from canonical Markdown sources
+        run: python3 scripts/build_pdf.py
+      - name: Render and inspect every PDF page automatically
+        run: python3 scripts/pdf_quality_gate.py
+      - name: Python content and local-link tests
         run: python3 -m unittest discover -s tests -v
       - name: JavaScript syntax
         run: |
@@ -22,6 +33,20 @@ jobs:
           node --check lib/economics.js
       - name: Test negative financial scenarios
         run: node tests/test_economics.cjs
+      - name: Retain published PDF and manifest for deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: handbook-pdf-build
+          path: pdf/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Retain visual proof for ALL pages
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-page-render-qa
+          path: pdf-qa-output/
+          if-no-files-found: error
+          retention-days: 30
   deploy:
     needs: verify
     runs-on: ubuntu-24.04
@@ -34,22 +59,12 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Install Chinese fonts and PDF toolchain
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y fonts-noto-cjk
-          python3 -m pip install --disable-pip-version-check markdown weasyprint pymupdf pillow
-      - name: Generate PDF from published Markdown sources
-        run: python3 scripts/build_pdf.py
-      - name: Render every page and verify text, layout and source links
-        run: python3 scripts/pdf_quality_gate.py
-      - name: Preserve complete visual QA contact sheets
-        uses: actions/upload-artifact@v4
+      - name: Download verified PDF, never re-render untested bytes
+        uses: actions/download-artifact@v4
         with:
-          name: pdf-page-render-qa
-          path: pdf-qa-output/
-          retention-days: 30
-      - name: Archive PDF and edition manifest to main (no force, no rebase)
+          name: handbook-pdf-build
+          path: pdf/
+      - name: Archive verified PDF and manifest (non-force push)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -60,38 +75,35 @@ jobs:
             git commit -m "docs(pdf): publish generated ChatGPT handbook edition [skip ci]"
             git push origin HEAD:main
           fi
-      - name: Keep QA artifacts out of GitHub Pages
-        run: rm -rf pdf-qa-output
       - uses: actions/configure-pages@v5
         with:
           enablement: true
       - uses: actions/upload-pages-artifact@v4
         with:
           path: '.'
-      - name: Deploy website and downloadable PDF
+      - name: Deploy website with PDF
         id: deployment
         uses: actions/deploy-pages@v4
-      - name: Verify LIVE website, PDF and SEO assets
+      - name: Verify LIVE website and PDF exact hash
         shell: bash
         run: |
           set -euo pipefail
           base="https://aipmandy.github.io/chatgpt-income-handbook/"
           expected=$(python3 -c 'import json;print(json.load(open("pdf/edition.json"))["sha256"])')
           for resource in index.html handbook.html workbench.html robots.txt sitemap.xml; do
-            echo "Checking live: ${base}${resource}"
             curl -fLsS --retry 6 --retry-delay 8 --retry-all-errors "${base}${resource}" -o /tmp/checked-site-resource
             test -s /tmp/checked-site-resource
+            echo "LIVE HTTP 200: ${resource}"
           done
           pdf_url="${base}pdf/chatgpt-income-handbook-guide.pdf"
           for attempt in 1 2 3 4 5 6; do
             curl -fLsS --retry 3 --retry-delay 5 "${pdf_url}" -o /tmp/live-handbook.pdf
             actual=$(sha256sum /tmp/live-handbook.pdf | cut -d' ' -f1)
             if [ "${actual}" = "${expected}" ]; then
-              echo "Verified LIVE PDF SHA-256: ${actual}"
+              echo "LIVE PDF SHA-256 verified: ${actual}"
               exit 0
             fi
-            echo "Attempt ${attempt}: live PDF SHA=${actual}, expected=${expected}"
+            echo "LIVE PDF mismatch on attempt ${attempt}: ${actual}; expected ${expected}"
             sleep 12
           done
-          echo "LIVE PDF hash mismatch; deployment is not accepted"
           exit 1
