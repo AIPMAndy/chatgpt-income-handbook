@@ -1,7 +1,8 @@
 {
   "title": "ChatGPT 商业实践手册",
   "pdf": "pdf/chatgpt-income-handbook-guide.pdf",
-  "sha256": "4dd869964026ab0d8545754c06c9b7e98ae42d896b117ab13da77c510fcee698",
+  "sha256": "8a92d77b4e23e1f8d8d3544e66b939e81db1b49d8ffa474aae01db2b903e0daf",
+  "source_fingerprint": "b2346dd12a7d4e029bc21294c8c0b9960b30650b7138a0e1e028aa64acdc952a",
   "source": "docs/COMPLETE-GUIDE.md",
   "chapters": 34,
   "appendices": [
