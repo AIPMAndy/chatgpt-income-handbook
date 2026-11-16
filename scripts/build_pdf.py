@@ -209,7 +209,14 @@ def main() -> None:
         '</section></body></html>'
     )
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    HTML(string=document, base_url=str(ROOT)).write_pdf(str(OUTPUT))
+    # Fixed PDF identifier avoids time/random IDs changing otherwise identical editions.
+    source_fingerprint = hashlib.sha256(
+        (raw + "\n" + "".join((ROOT / p).read_text(encoding="utf-8") for p in APPENDICES)
+        ).encode("utf-8")
+    ).hexdigest()
+    HTML(string=document, base_url=str(ROOT)).write_pdf(
+        str(OUTPUT), pdf_identifier="chatgpt-income-handbook-" + source_fingerprint
+    )
     digest = hashlib.sha256(OUTPUT.read_bytes()).hexdigest()
     edition = {
         "title": "ChatGPT 商业实践手册",
