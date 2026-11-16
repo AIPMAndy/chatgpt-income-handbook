@@ -21,6 +21,9 @@
 
 **互动网站**：https://aipmandy.github.io/chatgpt-income-handbook/ （已配置自动部署；以上线状态为准）
 
+**离线 PDF（自动从原始 Markdown 构建）**：[ChatGPT 商业实践手册 · 完整版](https://aipmandy.github.io/chatgpt-income-handbook/pdf/chatgpt-income-handbook-guide.pdf)。包含原有 34 章、公开服务 SOP、教学模拟、隐私与证据说明、来源台账及模板。构建脚本 `scripts/build_pdf.py`，全页自动渲染/结构/文本检查 `scripts/pdf_quality_gate.py`，版本 SHA 见 `pdf/edition.json`；自动 QA ≠ 真人逐页高清签收或真机验收。政策台账更新时间为 **2026-10-22**，请以官方最新政策为准。本文档不承诺收入、就业或任何商业成果。
+
+
 
 ## 苹果风品牌首页 / 专业手册 / 实操工作台（2026-10-29）
 
