@@ -9,13 +9,11 @@ from __future__ import annotations
 import hashlib
 import html
 import json
-import os
 import re
 import subprocess
 from pathlib import Path
 from urllib.parse import quote
 
-import fitz
 from markdown import markdown
 from weasyprint import HTML
 
@@ -163,7 +161,12 @@ def main() -> None:
         )
     sources = ''.join(source_section(ROOT / p, n) for n, p in enumerate(APPENDICES, 1))
     document = (
-        '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><style>'
+        '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
+        '<title>ChatGPT 商业实践手册｜34章开源攻略</title>'
+        '<meta name="author" content="AI 酋长 Andy / 星觉科技">'
+        '<meta name="description" content="34章教程、交付SOP、教学模拟、案例证据和公开模板">'
+        '<meta name="keywords" content="ChatGPT, AI, 商业实践, AI酋长Andy, 星觉科技">'
+        '<style>'
         + STYLE + '</style></head><body>'
         '<section class="cover">'
         '<div class="logo">星觉科技 / XINGJUE KNOWLEDGE</div>'
@@ -207,14 +210,6 @@ def main() -> None:
     )
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     HTML(string=document, base_url=str(ROOT)).write_pdf(str(OUTPUT))
-    with fitz.open(OUTPUT) as pdf:
-        meta = dict(pdf.metadata)
-        meta.update(title="ChatGPT 商业实践手册｜34章开源攻略", author="AI 酋长 Andy / 星觉科技",
-                    subject="34章教程、交付SOP、教学模拟、案例证据和公开模板",
-                    keywords="ChatGPT, AI, 课程, 商业实践, AI酋长Andy, 星觉科技")
-        pdf.set_metadata(meta)
-        pdf.save(OUTPUT.with_suffix(".tmp.pdf"), garbage=3, deflate=True)
-    os.replace(OUTPUT.with_suffix(".tmp.pdf"), OUTPUT)
     digest = hashlib.sha256(OUTPUT.read_bytes()).hexdigest()
     edition = {
         "title": "ChatGPT 商业实践手册",
