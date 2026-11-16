@@ -209,11 +209,23 @@ def main() -> None:
         '</section></body></html>'
     )
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    # Fixed PDF identifier avoids time/random IDs changing otherwise identical editions.
+    # The published PDF is a signed edition, not a fresh random-font-subset
+    # rendering on every CI run. Keep the exact published bytes when NONE of
+    # the canonical sources or generator have changed.
     source_fingerprint = hashlib.sha256(
-        (raw + "\n" + "".join((ROOT / p).read_text(encoding="utf-8") for p in APPENDICES)
-        ).encode("utf-8")
+        (raw + "\n" +
+         "".join((ROOT / p).read_text(encoding="utf-8") for p in APPENDICES) +
+         Path(__file__).read_text(encoding="utf-8")).encode("utf-8")
     ).hexdigest()
+    edition_path = OUTPUT.parent / "edition.json"
+    if OUTPUT.is_file() and edition_path.is_file():
+        old = json.loads(edition_path.read_text(encoding="utf-8"))
+        current_sha = hashlib.sha256(OUTPUT.read_bytes()).hexdigest()
+        if old.get("source_fingerprint") == source_fingerprint and old.get("sha256") == current_sha:
+            print(json.dumps({"pdf": str(OUTPUT.relative_to(ROOT)), "sha256": current_sha,
+                              "chapters": len(chapters), "appendices": len(APPENDICES),
+                              "reused_verified_edition": True}, ensure_ascii=False))
+            return
     HTML(string=document, base_url=str(ROOT)).write_pdf(
         str(OUTPUT), pdf_identifier="chatgpt-income-handbook-" + source_fingerprint
     )
@@ -222,6 +234,7 @@ def main() -> None:
         "title": "ChatGPT 商业实践手册",
         "pdf": OUTPUT.relative_to(ROOT).as_posix(),
         "sha256": digest,
+        "source_fingerprint": source_fingerprint,
         "source": "docs/COMPLETE-GUIDE.md",
         "chapters": len(chapters),
         "appendices": APPENDICES,
