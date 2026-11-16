@@ -1,0 +1,32 @@
+{
+  "title": "ChatGPT 商业实践手册",
+  "pdf": "pdf/chatgpt-income-handbook-guide.pdf",
+  "sha256": "e5f1e40e236d805f294a5a2c71ee665eb7e128338a11cb84a3e857b790f52028",
+  "source": "docs/COMPLETE-GUIDE.md",
+  "chapters": 34,
+  "appendices": [
+    "docs/SERVICE-SOPS.md",
+    "docs/END-TO-END-TRIAL.md",
+    "docs/DEMO-CASE-LAB.md",
+    "docs/UNIT-ECONOMICS.md",
+    "docs/PRIVACY-SOP.md",
+    "docs/EVIDENCE-PUBLICATION.md",
+    "docs/QUALITY-METHOD.md",
+    "docs/SOURCES.md",
+    "guides/7-DAY-PLAN.md",
+    "guides/30-DAY-PLAN.md",
+    "templates/ACCEPTANCE-REPORT.md",
+    "templates/AI-DISCLOSURE.md",
+    "templates/CASE-STUDY.md",
+    "templates/CHANGE-REQUEST.md",
+    "templates/CLIENT-BRIEF.md",
+    "templates/DELIVERY-QA.md",
+    "templates/FAILURE-RETRO.md",
+    "templates/PRIVACY-CONSENT.md",
+    "templates/PROPOSAL-SCRIPT.md",
+    "templates/QUOTE.md"
+  ],
+  "edition_source_revision_date": "2026-11-16",
+  "policy_reference_last_checked": "2026-10-22",
+  "provenance": "repository Markdown; demos are educational only"
+}
